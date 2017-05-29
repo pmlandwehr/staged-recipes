@@ -1,0 +1,59 @@
+{% set name = "databrewer" %}
+{% set version = "0.1.1" %}
+{% set bundle = "tar.gz" %}
+{% set hash_type = "sha256" %}
+{% set hash = "476813afcd2c70818a3c76fba5e00acd139a4d66764e4249bd4660ffb43ef801" %}
+{% set build = 0 %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  fn: {{ name }}-{{ version }}.{{ bundle }}
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ bundle }}
+  {{ hash_type }}: {{ hash }}
+build:
+  entry_points:
+    - databrewer = databrewer.__main__:main
+
+  number: {{ build }}
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+
+
+requirements:
+  build:
+    - python
+    - setuptools
+
+  run:
+    - python
+    - awesome-slugify >=1.6
+    - click >=6.0,<7.0
+    - jsonschema >=2.5
+    - pyyaml >=3.0,<4.0
+    - requests >=2.8
+    - six >=1.10
+    - tqdm >=4.0
+    - whoosh >=2.7,<3.0
+    - toolz
+
+test:
+  imports:
+    - databrewer
+
+  commands:
+    - databrewer --help
+
+about:
+  home: https://github.com/rolando/databrewer
+  license_file: LICENSE
+  license: MIT
+  license_family: MIT
+  summary: 'The missing datasets manager.'
+  dev_url: https://github.com/rolando/databrewer
+  doc_url: https://databrewer.readthedocs.io/en/stable/
+
+extra:
+  recipe-maintainers:
+    - pmlandwehr
